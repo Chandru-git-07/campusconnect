@@ -1,9 +1,9 @@
-import bcrypt
 from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
+import bcrypt
 from app.config import settings
 from app.database import get_db
 from app import models
@@ -18,15 +18,19 @@ def get_password_hash(password: str) -> str:
 
 def create_access_token(data: dict) -> str:
     to_encode = data.copy()
-    to_encode.update({"exp": datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)})
+    expire = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    to_encode.update({"exp": expire})
     return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> models.User:
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         uid = payload.get("sub")
+        if uid is None:
+            raise HTTPException(401, "Invalid token")
     except JWTError:
         raise HTTPException(401, "Invalid token")
     user = db.query(models.User).filter_by(id=int(uid)).first()
-    if not user: raise HTTPException(401, "User not found")
+    if not user:
+        raise HTTPException(401, "User not found")
     return user

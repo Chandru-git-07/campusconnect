@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes import auth, dashboard, groups, match, requests
+from app.routes import authentication, dashboard, groups, match, requests
 
 app = FastAPI(title="CampusConnect Backend")
 
@@ -12,7 +12,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(auth.router)
+app.include_router(authentication.router)
 app.include_router(dashboard.router)
 app.include_router(groups.router)
 app.include_router(match.router)
