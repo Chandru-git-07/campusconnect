@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #fdf6e9;
+  color: #1a1b2e;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+.eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.btn-pill {
+  border-radius: 9999px;
+  font-weight: 600;
+}
+
+.field {
+  border-radius: 1rem;
+  background: #ffffff;
+  width: 100%;
+  padding: 0.85rem 1rem;
+}
+
+.field-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #6b6b85;
+  margin-bottom: 0.35rem;
+  display: block;
+}
